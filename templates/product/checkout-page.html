@@ -1,0 +1,273 @@
+{%extends "product/base.html"%}
+{% load bootstrap4%}
+{% block content %}
+  <!--Main layout-->
+  <main class="">
+    <div class="container wow fadeIn">
+
+      <!-- Heading -->
+      <h2 class="my-5 h2 text-center">Checkout form</h2>
+
+      <!--Grid row-->
+      <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-8 mb-4">
+
+          <!--Card-->
+          <div class="card">
+
+            <!--Card content-->
+            <form class="card-body" method="POST">
+              {% csrf_token %}
+              <!--address-->
+              <h3>Shipping Address</h3>
+
+              <div class="hideable_shipping_form">
+                <div class="md-form mb-5">
+                  <input type="text" id="shipping_address" class="form-control" placeholder="1234 Main St" name="shipping_address">
+                  <!-- {{form.street_address}} -->
+                  <label for="shipping_address" class="">Address</label>
+                </div>
+
+                <!--address-2-->
+                <div class="md-form mb-5">
+                  <input type="text" id="shipping_address2" class="form-control" placeholder="Apartment or suite" name="shipping_address2">
+                  <!-- {{form.appartment_address}} -->
+                  <label for="shipping_address2" class="">Address 2 (optional)</label>
+                </div>
+
+                <!--Grid row-->
+                <div class="row">
+
+                  <!--Grid column-->
+                  <div class="col-lg-4 col-md-6 mb-4">
+
+                    <label for="shipping_country">Country</label>
+                    <!-- <select class="custom-select d-block w-100" id="country" required>
+                      <option value="">Choose...</option>
+                      <option>United States</option>
+                    </select> -->
+                    {{form.shipping_country}}
+                    <div class="invalid-feedback">
+                      Please select a valid country.
+                    </div>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 mb-4">
+
+                    <label for="shipping_zip">Zip</label>
+                    <input type="text" class="form-control" id="shipping_zip" placeholder="Zip Code" name="shipping_zip" required>
+                    <!-- {{form.zip}} -->
+                    <div class="invalid-feedback">
+                      Zip code required.
+                    </div>
+
+                  </div>
+                  <!--Grid column-->
+
+                </div>
+                <hr>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="same_billing_address" name="same_billing_address">
+                  <label class="custom-control-label" for="same_billing_address">Billing address is the same as my Shipping address</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="set_default_shipping" name="set_default_shipping">
+                  <label class="custom-control-label" for="set_default_shipping">Save this as default shipping address</label>
+                </div>
+
+              </div>
+              <!-- ----------------------------This uses a default shipping address by the company -->
+              {% if default_shipping_address %}
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="use_default_shipping" name="use_default_shipping">
+                <label class="custom-control-label" for="use_default_shipping">Use default shipping address: {{default_billing_address.street_address|truncatechars:10}}</label>
+              </div>
+              {% endif %}
+              <hr>
+
+              
+              <h3>Billing Adress</h3>
+              <div class="hideable_billing_form">
+                <div class="hideable_shipping_form">
+                  <div class="md-form mb-5">
+                    <input type="text" id="billing_address" class="form-control" placeholder="1234 Main St" name="billing_address">
+                    <!-- {{form.street_address}} -->
+                    <label for="billing_address" class="">Address</label>
+                  </div>
+  
+                  <!--address-2-->
+                  <div class="md-form mb-5">
+                    <input type="text" id="billing_address2" class="form-control" placeholder="Apartment or suite" name="billing_address2">
+                    <!-- {{form.appartment_address}} -->
+                    <label for="billing_address2" class="">Address 2 (optional)</label>
+                  </div>
+  
+                  <!--Grid row-->
+                  <div class="row">
+  
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-6 mb-4">
+  
+                      <label for="billing_country">Country</label>
+                      <!-- <select class="custom-select d-block w-100" id="country" required>
+                        <option value="">Choose...</option>
+                        <option>United States</option>
+                      </select> -->
+                      {{form.billing_country}}
+                      <div class="invalid-feedback">
+                        Please select a valid country.
+                      </div>
+  
+                    </div>
+  
+                    <div class="col-lg-4 col-md-6 mb-4">
+  
+                      <label for="billing_zip">Zip</label>
+                      <input type="text" class="form-control" id="billing_zip" placeholder="Zip Code" name="billing_zip" required>
+                      <!-- {{form.zip}} -->
+                      <div class="invalid-feedback">
+                        Zip code required.
+                      </div>
+  
+                    </div>
+                  </div>
+                  <!--Grid column-->
+
+                </div>
+                <!--Grid row-->
+
+                <hr>
+
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="set_default_billing" name="set_default_billing">
+                  <label class="custom-control-label" for="set_default_billing">Save this as your default billing <address></address></label>
+                </div>
+
+              </div>
+              <!-- ----------------------------This uses a default billing address by the company -->
+
+              {% if default_billing_address %}
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="use_default_billing" name="use_default_billing">
+                <label class="custom-control-label" for="use_default_billing">Use default shipping address: {{default_billing_address.street_address|truncatechars:10}}</label>
+              </div>
+              {% endif %}
+              <hr>
+
+
+
+              <h3>Payment Options</h3>
+
+              <div class="d-block my-3">
+                {% for value, name in form.fields.payment_options.choices%}
+                <div class="custom-control custom-radio">
+                  <input id="{{name}}" name="payment_options"  value="{{value}}" type="radio" class="custom-control-input" required>
+                  <label class="custom-control-label" for="{{name}}">{{name}}</label>
+                </div>
+                {% endfor%}
+              </div>
+             
+              <hr class="mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+
+            </form>
+
+          </div>
+          <!--/.Card-->
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-4 mb-4">
+
+          <!-- Heading -->
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Your cart</span>
+            <span class="badge badge-secondary badge-pill">{{order.items.count}}</span>
+          </h4>
+
+          <!-- Cart -->
+          <ul class="list-group mb-3 z-depth-1">
+          {% for order_item in order.items.all%}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+                <h6 class="my-0">{{order_item.item.title}}</h6>
+                <small class="text-muted">Quantity{{order_item.quantity}}</small>
+            </div>
+            <span class="text-muted">Kshs {{order_item.get_final_price}}</span>
+            </li>
+          {% endfor %}
+          {% if order.coupon %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                  <h6 class="my-0">PROMO CODE</h6>
+                  <small class="text-muted">Code = {{order.coupon.code}}</small>
+              </div>
+              <span class="text-muted">-Kshs {{order.coupon.amount}}</span>
+            </li>
+            {% endif %}
+
+            <li class="list-group-item d-flex justify-content-between">
+            <span>Total (Ksh)</span>
+            <strong>Kshs {{order.get_order_price}}</strong>
+            </li>
+          </ul>
+          <!-- Cart -->
+
+          <!-- Promo code -->
+          <form class="card p-2" action="{% url 'product:coupon'%}" method="POST">
+            {% csrf_token%}
+            <div class="input-group">
+              <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
+              {{coupon_form.code}}
+              <div class="input-group-append">
+                <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+              </div>
+            </div>
+          </form>
+          <!-- Promo code -->
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+    </div>
+  </main>
+  <!--Main layout-->
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Access the hideable_billing_address and shipping address
+var hideable_billing_form = $(".hideable_billing_form")
+var hideable_shipping_form = $(".hideable_shipping_form")
+
+// Get the input fields for the select box
+var use_default_billing = document.querySelector('input[name=use_default_billing]')
+var use_default_shipping = document.querySelector('input[name=use_default_shipping]')
+console.log(use_default_shipping)
+use_default_shipping.addEventListener('change', function(){
+  if (this.checked){
+    hideable_shipping_form.hide()
+  }
+  else{
+    hideable_shipping_form.show()
+  }
+})
+
+use_default_billing.addEventListener('change', function(){
+  if (this.checked){
+    hideable_billing_form.hide()
+  }
+  else{
+    hideable_billing_form.show()
+  }
+})
+</script>
+{% endblock %}

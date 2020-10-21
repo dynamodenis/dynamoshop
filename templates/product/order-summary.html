@@ -1,0 +1,70 @@
+{%extends "product/base.html"%}
+{% load static %}
+{% block content%}
+  <!--Carousel Wrapper-->
+    <div class="container">
+        <legend class="mt-2 text-center">Order Summary</legend>
+        <div class="table-responsive">
+            <div class="box-element">
+                <a  class="btn btn-outline-dark btn-sm" href="{% url 'product:product_list' %}">&#x2190; Continue Shopping</a>
+                <br>
+                <br>
+                <table class="table">
+                    <tr>
+                        <th><h5>Items: <strong></strong></h5></th>
+                        <th><h5>Total:<strong> Kshs {{order.get_order_price}}</strong></h5></th>
+                        <th>
+                            <a  style="float:right; margin:5px;" class="btn btn-success btn-sm" href="{% url 'product:checkout' %}">Checkout</a>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Item Image</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_item in order.items.all %}
+                    <tr>
+                    <th scope="row">{{ forloop.counter}}</th>
+                    <td><a href="{{order_item.item.get_absolute_url}}">{{order_item.item.title}}</a></td>
+                    <td><a href="{{order_item.item.get_absolute_url}}"><img src="{{order_item.item.image.url}}" alt="Image" width="70vh" height="60vh"></a></td>
+                    <td>{{order_item.item.price}}</td>
+                    <td>
+                        <a href="{% url 'product:remove-single-item' order_item.item.slug %}"><i class="fas fa-minus mr-2"></i></a>
+                         {{order_item.quantity}} 
+                        <a href="{% url 'product:add_single_item_cart' order_item.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
+                    </td>
+                    <td>
+                        {% if order_item.item.discount_price%}
+                        Kshs {{order_item.get_total_discount_price}} <span class="badge badge-primary">(Saving Kshs{{order_item.get_savings}})</span>
+                        {% else%}
+                        kshs {{order_item.get_total_price}}
+                        {% endif %}
+                        <a style="color: red;" href="{% url 'product:remove_item_from_cart' order_item.item.slug %}" class="float-right">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                    
+                    </tr>
+                    {% endfor%}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class=""><strong>Total</strong> Kshs <b>{{order.get_order_price}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock%}

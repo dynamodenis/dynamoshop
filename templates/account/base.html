@@ -1,0 +1,109 @@
+{% load static%}
+{% load bootstrap4%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title%}
+    <title>InstaPost | {{title}}</title>
+    {% else %}
+    <title>InstaPost</title>
+    {% endif%}
+    {% block styles %}
+        {% bootstrap_css %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="{%static 'register_css/register.css'%}"  >
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Tangerine'>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-expand-sm navbar-light white scrolling-navbar">
+        <div class="container">
+
+        <!-- Brand -->
+        <a class="navbar-brand waves-effect" href="{% url 'product:product_list'%}">
+            <strong class="blue-text">DynamoShop</strong>
+        </a>
+
+        <!-- Collapse -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Left -->
+            <ul class="navbar-nav mr-auto">
+            <!-- <li class="nav-item active">
+                <a class="nav-link waves-effect" href="{% url 'product:product_list'%}">Home
+                <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-effect" href="{% url 'product:checkout'%}" target="_blank">Checkout Page</a>
+            </li> -->
+            <!-- <li class="nav-item">
+                <a class="nav-link waves-effect" href=""
+                target="_blank">Product</a>
+            </li> -->
+            <!-- <li class="nav-item">
+                <a class="nav-link waves-effect" href="https://mdbootstrap.com/education/bootstrap/" target="_blank">Free
+                tutorials</a>
+            </li> -->
+            </ul>
+
+            <!-- Right -->
+            <ul class="navbar-nav nav-flex-icons">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link waves-effect">
+                <span class="badge red z-depth-1 mr-1"> 1 </span>
+                <i class="fas fa-shopping-cart"></i>
+                <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-effect" href="{% url 'accounts:logout' %}">
+                <span class="badge red z-depth-1 mr-1"> Logout </span>
+                </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link waves-effect" href="{% url 'accounts:login' %}">
+                <span class="badge red z-depth-1 mr-1"> Login </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-effect" href="{% url 'accounts:register'%}">
+                <span class="badge red z-depth-1 mr-1"> Register </span>
+                </a>
+            </li>
+            {% endif %}
+            </ul>
+
+        </div>
+
+        </div>
+    </nav>
+    <div class="text-center">
+        {% if messages %}
+            {% for message in messages%}
+                <div class="alert alert-{{message.tags}}">{{message}}</div>
+            {% endfor%}
+        {% endif %}
+    </div>
+    {% block content%}
+    {% endblock %}
+    {% block scripts %}
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {% bootstrap_javascript%}
+    {% endblock %}
+</body>
+</html>

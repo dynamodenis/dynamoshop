@@ -1,0 +1,30 @@
+{%extends "product/base.html"%}
+{% load bootstrap4%}
+{% block content %}
+  <!--Main layout-->
+  <main class="">
+    <div class="container wow fadeIn">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <!-- Material input -->
+            <div class="md-form">
+                <!-- <input type="text" id="" class="form-control"> -->
+                {{form.ref_code}}
+                <label for="">Order Reference Code</label>
+            </div>
+            <div class="md-form">
+                <!-- <input type="text" id="" class="form-control"> -->
+                {{form.message}}
+                <label for="">Reason</label>
+            </div>
+            <div class="md-form">
+                <!-- <input type="text" id="" class="form-control"> -->
+                {{form.email}}
+                <label for="">Email</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Submit Request</button>
+        </form>
+    </div>
+  </main>
+  <!--Main layout-->
+{% endblock %}
